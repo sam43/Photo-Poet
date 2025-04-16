@@ -122,7 +122,7 @@ export default function Home() {
     const encodedText = encodeURIComponent(text);
     const encodedImageUrl = encodeURIComponent(imageUrl);
 
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedImageUrl}`; // need to fix accordingly
     window.open(twitterUrl, '_blank');
   }, [poem, image, toast]);
 

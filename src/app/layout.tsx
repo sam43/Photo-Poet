@@ -24,9 +24,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      {/* Removed data-new-gr-c-s-check-loaded and data-gr-ext-installed attributes */}
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en">      
+      <body
+        className={`sans-serif monospace antialiased`}
+      >
         {children}
       </body>
     </html>
