@@ -1,4 +1,3 @@
-
 {
   "PhotoPoet": "ফটো পোয়েট",
   "Language": "ভাষা",
@@ -23,5 +22,9 @@
   "No poem generated": "কোনো কবিতা তৈরি হয়নি",
   "Please generate a poem before saving.": "সংরক্ষণ করার আগে একটি কবিতা তৈরি করুন।",
   "Poem Saved": "কবিতা সংরক্ষিত হয়েছে",
-  "Your poem has been successfully saved.": "আপনার কবিতা সফলভাবে সংরক্ষিত হয়েছে।"
+  "Your poem has been successfully saved.": "আপনার কবিতা সফলভাবে সংরক্ষিত হয়েছে।",
+  "Share to Twitter": "টুইটারে শেয়ার করুন",
+  "Share to Facebook": "ফেসবুকে শেয়ার করুন",
+  "Cannot share": "শেয়ার করা সম্ভব নয়",
+  "Please generate a poem and upload an image before sharing.": "শেয়ার করার পূর্বে কবিতা তৈরি করুন এবং ছবি আপলোড করুন।"
 }

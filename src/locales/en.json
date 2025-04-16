@@ -1,4 +1,3 @@
-
 {
   "PhotoPoet": "PhotoPoet",
   "Language": "Language",
@@ -23,5 +22,9 @@
   "No poem generated": "No poem generated",
   "Please generate a poem before saving.": "Please generate a poem before saving.",
   "Poem Saved": "Poem Saved",
-  "Your poem has been successfully saved.": "Your poem has been successfully saved."
+  "Your poem has been successfully saved.": "Your poem has been successfully saved.",
+  "Share to Twitter": "Share to Twitter",
+  "Share to Facebook": "Share to Facebook",
+  "Cannot share": "Cannot share",
+  "Please generate a poem and upload an image before sharing.": "Please generate a poem and upload an image before sharing."
 }
