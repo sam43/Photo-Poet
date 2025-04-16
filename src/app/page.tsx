@@ -115,16 +115,6 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="text-2xl font-bold mb-4">PhotoPoet</h1>
 
-      <div className="flex items-center space-x-2 mb-4">
-        <Label htmlFor="language">Language:</Label>
-        <Switch
-          id="language"
-          checked={isBangla}
-          onCheckedChange={setIsBangla}
-        />
-        {isBangla ? "BN" : "EN"}
-      </div>
-
       <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
         <Card className="w-full">
           <CardHeader>
@@ -151,6 +141,15 @@ export default function Home() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="flex items-center justify-center mb-4">
+              <Switch
+                id="language"
+                checked={isBangla}
+                onCheckedChange={setIsBangla}
+              >
+                {isBangla ? "BN" : "EN"}
+              </Switch>
+            </div>
             <div className="mb-4">
               <Label htmlFor="category">Category</Label>
               <Select onValueChange={setCategory} defaultValue={category}>
