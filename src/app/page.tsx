@@ -146,8 +146,11 @@ export default function Home() {
                 id="language"
                 checked={isBangla}
                 onCheckedChange={setIsBangla}
+                className="w-[5rem] h-[2.5rem] data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary"
               >
-                {isBangla ? "BN" : "EN"}
+                <span className="absolute left-0 top-0 bottom-0 w-1/2 flex items-center justify-center data-[state=checked]:right-0 data-[state=checked]:left-auto">
+                  {isBangla ? "BN" : "EN"}
+                </span>
               </Switch>
             </div>
             <div className="mb-4">
