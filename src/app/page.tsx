@@ -143,100 +143,96 @@ export default function Home() {
     
       
         
-          {t('PhotoPoet')}
+          {t('Photo Poet')}
         
-      
-
-      
         
           
             
-              {t('Image')}
-            
-            
-              {t('Upload an image to generate a poem.')}
-            
-            
               
-                <Input type="file" accept="image/*" onChange={handleImageUpload} />
-                {image && (
+                 {t('Image')}
+              
+              
+                {t('Upload an image to generate a poem.')}
+              
+              
+                
+                  <Input type="file" accept="image/*" onChange={handleImageUpload} />
+                  {image && (
+                    
+                      <img
+                        src={image}
+                        alt={t('Uploaded')}
+                        className="max-w-full h-auto rounded-md shadow-md mt-4"
+                      />
+                    
+                  )}
+                
+              
+              
+                {t('Poem')}
+              
+              
+                {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
+              
+              
+                
                   
                     
-                      src={image}
-                      alt={t('Uploaded')}
-                      className="max-w-full h-auto rounded-md shadow-md mt-4"
-                    />
+                      {isBangla ? "BN" : "EN"}
+                    
+                      <Switch id="isBangla" checked={isBangla} onCheckedChange={setIsBangla} />
+                    
                   
-                )}
-              
-            
-          
+                  
+                    
+                      {t('Category')}
+                      
+                        
+                          {t('Select a category')}
+                        
+                        
+                          {categories.map((cat) => (
+                            
+                              {cat}
+                            
+                          ))}
+                        
+                      
+                    
+                  
 
-          
-            
-              {t('Poem')}
-            
-            
-              {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
-            
-            
-              
-                
-                  
-                    {isBangla ? "BN" : "EN"}
-                  
-                    <Switch id="isBangla" checked={isBangla} onCheckedChange={setIsBangla} />
-                  
-                
-                
-                  
-                    {t('Category')}
-                    
-                      
-                        {t('Select a category')}
-                      
-                      
-                        {categories.map((cat) => (
-                          
-                            {cat}
-                          
-                        ))}
-                      
-                    
-                  
-                
-
-                {loading ? (
-                  
+                  {loading ? (
                     
                       
                         
+                          
+                        
+                        {t('Generating poem...')}
                       
-                      {t('Generating poem...')}
                     
-                  
-                ) : (
-                  
+                  ) : (
                     
-                      value={poem || ''}
-                      placeholder={t('Poem will appear here...')}
-                      className="min-h-[200px] resize-none"
-                    />
-                  
-                )}
-                
+                      <Textarea
+                        value={poem || ''}
+                        placeholder={t('Poem will appear here...')}
+                        className="min-h-[200px] resize-none"
+                      />
+                    
+                  )}
                   
                     
-                      {t('Generate Poem')}
-                    
-                    
-                      {t('Save Poem')}
-                    
-                    
-                      {t('Share to Twitter')}
-                    
-                    
-                      {t('Share to Facebook')}
+                      
+                        {t('Generate Poem')}
+                      
+                      
+                        {t('Save Poem')}
+                      
+                      
+                        {t('Share to Twitter')}
+                      
+                      
+                        {t('Share to Facebook')}
+                      
                     
                   
                 
