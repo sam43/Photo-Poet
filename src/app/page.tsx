@@ -140,107 +140,87 @@ export default function Home() {
   }, [poem, image, toast]);
 
   return (
-    
-      
-        
-          {t('Photo Poet')}
-        
-        
-          
-            
-              
-                 {t('Image')}
-              
-              
-                {t('Upload an image to generate a poem.')}
-              
-              
-                
-                  <Input type="file" accept="image/*" onChange={handleImageUpload} />
-                  {image && (
-                    
-                      <img
-                        src={image}
-                        alt={t('Uploaded')}
-                        className="max-w-full h-auto rounded-md shadow-md mt-4"
-                      />
-                    
-                  )}
-                
-              
-              
-                {t('Poem')}
-              
-              
-                {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
-              
-              
-                
-                  
-                    
-                      {isBangla ? "BN" : "EN"}
-                    
-                      <Switch id="isBangla" checked={isBangla} onCheckedChange={setIsBangla} />
-                    
-                  
-                  
-                    
-                      {t('Category')}
-                      
-                        
-                          {t('Select a category')}
-                        
-                        
-                          {categories.map((cat) => (
-                            
-                              {cat}
-                            
-                          ))}
-                        
-                      
-                    
-                  
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-2xl font-bold mb-4">{t('PhotoPoet')}</h1>
+      <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>{t('Image')}</CardTitle>
+            <CardDescription>{t('Upload an image to generate a poem.')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Input type="file" accept="image/*" onChange={handleImageUpload} />
+            {image && (
+              <div className="mt-4">
+                <img
+                  src={image}
+                  alt={t('Uploaded')}
+                  className="max-w-full h-auto rounded-md shadow-md"
+                />
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-                  {loading ? (
-                    
-                      
-                        
-                          
-                        
-                        {t('Generating poem...')}
-                      
-                    
-                  ) : (
-                    
-                      <Textarea
-                        value={poem || ''}
-                        placeholder={t('Poem will appear here...')}
-                        className="min-h-[200px] resize-none"
-                      />
-                    
-                  )}
-                  
-                    
-                      
-                        {t('Generate Poem')}
-                      
-                      
-                        {t('Save Poem')}
-                      
-                      
-                        {t('Share to Twitter')}
-                      
-                      
-                        {t('Share to Facebook')}
-                      
-                    
-                  
-                
-              
-            
-          
-        
-      
-    
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>{t('Poem')}</CardTitle>
+            <CardDescription>{poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center space-x-2 mb-2">
+              <Switch id="isBangla" checked={isBangla} onCheckedChange={setIsBangla} />
+              <Label htmlFor="isBangla">{isBangla ? "BN" : "EN"}</Label>
+            </div>
+
+            <div className="mb-4">
+              <Label htmlFor="category">{t('Category')}</Label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder={t('Select a category')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                {t('Generating poem...')}
+              </div>
+            ) : (
+              <Textarea
+                value={poem || ''}
+                placeholder={t('Poem will appear here...')}
+                className="min-h-[200px] resize-none"
+              />
+            )}
+
+            <div className="flex justify-between mt-4">
+              <Button onClick={generatePoem} disabled={loading}>
+                {t('Generate Poem')}
+              </Button>
+              <Button onClick={savePoem} disabled={!poem}>
+                {t('Save Poem')}
+              </Button>
+            </div>
+            <div className="flex justify-between mt-4">
+              <Button onClick={shareToTwitter} disabled={!poem || !image}>
+                {t('Share to Twitter')}
+              </Button>
+              <Button onClick={shareToFacebook} disabled={!poem || !image}>
+                {t('Share to Facebook')}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
