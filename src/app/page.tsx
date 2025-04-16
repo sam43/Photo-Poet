@@ -13,6 +13,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
 import {cn} from "@/lib/utils";
+import {useTranslation} from 'react-i18next';
 
 const categories = [
   "Romantic",
@@ -34,6 +35,7 @@ export default function Home() {
   const [language, setLanguage] = useState<string>("English"); // Default language
   const [isBangla, setIsBangla] = useState(false);
   const { toast } = useToastHook()
+  const { t } = useTranslation();
 
   const handleImageUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -107,20 +109,20 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">PhotoPoet</h1>
+      <h1 className="text-2xl font-bold mb-4">{t('PhotoPoet')}</h1>
 
       <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Image</CardTitle>
-            <CardDescription>Upload an image to generate a poem.</CardDescription>
+            <CardTitle>{t('Image')}</CardTitle>
+            <CardDescription>{t('Upload an image to generate a poem.')}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center">
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="mb-4" />
             {image && (
               <img
                 src={image}
-                alt="Uploaded"
+                alt={t('Uploaded')}
                 className="max-w-full h-auto rounded-md shadow-md"
               />
             )}
@@ -129,31 +131,34 @@ export default function Home() {
 
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Poem</CardTitle>
+            <CardTitle>{t('Poem')}</CardTitle>
             <CardDescription>
-              {poem ? 'Generated poem based on the image.' : 'No poem generated yet.'}
+              {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-4">
               <div className="flex items-center justify-center mb-4">
+                <Label htmlFor="language" className="mr-2">{t('Language')}:</Label>
                 <Switch
                   id="language"
                   checked={isBangla}
                   onCheckedChange={setIsBangla}
+                  aria-label="Select Language"
                   className={cn("w-[5rem] h-[2.5rem] data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary relative rounded-full")}
                 >
-                  <span className={cn("absolute left-0 top-0 bottom-0 w-1/2 flex items-center justify-center transition-all duration-300 data-[state=checked]:right-0 data-[state=checked]:left-auto",
+                 
+                </Switch>
+                 <div className={cn("absolute left-0 top-0 bottom-0 w-1/2 flex items-center justify-center transition-all duration-300 data-[state=checked]:right-0 data-[state=checked]:left-auto",
                   isBangla ? "text-white" : "text-gray-500"
                   )}>
-                    {isBangla ? "BN" : "EN"}
-                  </span>
-                </Switch>
+                   {isBangla ? "BN" : "EN"}
+                  </div>
               </div>
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category">{t('Category')}</Label>
               <Select onValueChange={setCategory} defaultValue={category}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a category" />
+                  <SelectValue placeholder={t('Select a category')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
@@ -168,22 +173,22 @@ export default function Home() {
             {loading ? (
               <div className="flex items-center justify-center">
                 <Icons.spinner className="animate-spin h-6 w-6 mr-2" />
-                Generating poem...
+                {t('Generating poem...')}
               </div>
             ) : (
               <Textarea
                 readOnly
                 value={poem || ''}
-                placeholder="Poem will appear here..."
+                placeholder={t('Poem will appear here...')}
                 className="min-h-[200px] resize-none"
               />
             )}
             <div className="flex justify-end mt-4">
               <Button onClick={generatePoem} disabled={loading} className="mr-2">
-                Generate Poem
+                {t('Generate Poem')}
               </Button>
               <Button variant="secondary" onClick={savePoem} disabled={loading || !poem}>
-                Save Poem
+                {t('Save Poem')}
               </Button>
             </div>
           </CardContent>
