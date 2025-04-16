@@ -1,4 +1,3 @@
-
 'use client';
 
 import {useState, useCallback} from 'react';
@@ -10,12 +9,30 @@ import {Input} from '@/components/ui/input';
 import {toast} from "@/hooks/use-toast"
 import {useToast as useToastHook} from "@/hooks/use-toast"
 import {Icons} from "@/components/icons"
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Label} from "@/components/ui/label";
+import {Switch} from "@/components/ui/switch";
+import {cn} from "@/lib/utils";
+
+const categories = [
+  "Romantic",
+  "Sad",
+  "Happy",
+  "Angry",
+  "Hopeful",
+  "Melancholy",
+  "Nature",
+  "Abstract"
+];
 
 export default function Home() {
   const [image, setImage] = useState<string | null>(null);
   const [poem, setPoem] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [filename, setFilename] = useState<string | null>(null);
+  const [category, setCategory] = useState<string>("Romantic"); // Default category
+  const [language, setLanguage] = useState<string>("English"); // Default language
+  const [isBangla, setIsBangla] = useState(false);
   const { toast } = useToastHook()
 
   const handleImageUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +63,7 @@ export default function Home() {
 
     setLoading(true);
     try {
-      const result = await imageToPoem({photoUrl: image});
+      const result = await imageToPoem({photoUrl: image, category, language: isBangla ? "Bangla" : "English"});
       setPoem(result?.poem || 'Failed to generate poem.');
       toast({
         title: "Poem Generated",
@@ -62,7 +79,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [image, toast]);
+  }, [image, toast, category, language, isBangla]);
 
   const savePoem = useCallback(() => {
     if (!poem) {
@@ -91,6 +108,17 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="text-2xl font-bold mb-4">PhotoPoet</h1>
+
+      <div className="flex items-center space-x-2 mb-4">
+        <Label htmlFor="language">Language:</Label>
+        <Switch
+          id="language"
+          checked={isBangla}
+          onCheckedChange={setIsBangla}
+        />
+        {isBangla ? "BN" : "EN"}
+      </div>
+
       <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
         <Card className="w-full">
           <CardHeader>
@@ -117,6 +145,22 @@ export default function Home() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="mb-4">
+              <Label htmlFor="category">Category</Label>
+              <Select onValueChange={setCategory} defaultValue={category}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             {loading ? (
               <div className="flex items-center justify-center">
                 <Icons.spinner className="animate-spin h-6 w-6 mr-2" />

@@ -1,8 +1,6 @@
-// use server'
-
 'use server';
 /**
- * @fileOverview An AI agent that generates a poem based on an image.
+ * @fileOverview An AI agent that generates a poem based on an image, category, and language.
  *
  * - imageToPoem - A function that handles the image to poem generation process.
  * - ImageToPoemInput - The input type for the imageToPoem function.
@@ -14,6 +12,8 @@ import {z} from 'genkit';
 
 const ImageToPoemInputSchema = z.object({
   photoUrl: z.string().describe('The URL of the image.'),
+  category: z.string().describe('The category of emotion for the poem (e.g., Romantic, Sad).'),
+  language: z.string().describe('The language of the poem (e.g., English, Bangla).'),
 });
 export type ImageToPoemInput = z.infer<typeof ImageToPoemInputSchema>;
 
@@ -51,6 +51,8 @@ const generatePoemPrompt = ai.definePrompt({
   input: {
     schema: z.object({
       imageDescription: z.string().describe('A textual description of the image, including key objects, scenes, and emotions.'),
+      category: z.string().describe('The category of emotion for the poem (e.g., Romantic, Sad).'),
+      language: z.string().describe('The language of the poem (e.g., English, Bangla).'),
     }),
   },
   output: {
@@ -58,7 +60,7 @@ const generatePoemPrompt = ai.definePrompt({
       poem: z.string().describe('A poem inspired by the image description.'),
     }),
   },
-  prompt: `You are a poet laureate.  Write a poem inspired by the following image description:\n\n  {{{imageDescription}}}`,
+  prompt: `You are a poet laureate. Write a poem in {{language}} inspired by the following image description, with a {{category}} tone:\n\n  {{{imageDescription}}}`,
 });
 
 const imageToPoemFlow = ai.defineFlow<
@@ -69,9 +71,11 @@ const imageToPoemFlow = ai.defineFlow<
   inputSchema: ImageToPoemInputSchema,
   outputSchema: ImageToPoemOutputSchema,
 }, async input => {
-  const {output: analyzeImageOutput} = await analyzeImagePrompt(input);
+  const {output: analyzeImageOutput} = await analyzeImagePrompt({photoUrl: input.photoUrl});
   const {output: generatePoemOutput} = await generatePoemPrompt({
     imageDescription: analyzeImageOutput!.description,
+    category: input.category,
+    language: input.language,
   });
 
   return {
