@@ -33,7 +33,7 @@ export default function Home() {
   const [filename, setFilename] = useState<string | null>(null);
   const [category, setCategory] = useState<string>("Romantic"); // Default category
   const [language, setLanguage] = useState<string>("English"); // Default language
-  const [isBangla, setIsBangla] = useState(false);
+  const [isBangla, setIsBangla] = useState<boolean>(false);
   const { toast } = useToastHook()
   const { t } = useTranslation();
 
@@ -69,7 +69,7 @@ export default function Home() {
       setPoem(result?.poem || 'Failed to generate poem.');
       toast({
         title: "Poem Generated",
-        description: "Your poem has been successfully generated.",
+        description: "Your poem has been successfully generated",
       })
     } catch (error: any) {
       console.error('Error generating poem:', error);
@@ -108,92 +108,102 @@ export default function Home() {
   }, [poem, filename, toast]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">{t('PhotoPoet')}</h1>
+    
+      
+        
+          
+            {t('PhotoPoet')}
+          
+        
 
-      <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>{t('Image')}</CardTitle>
-            <CardDescription>{t('Upload an image to generate a poem.')}</CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center">
-            <Input type="file" accept="image/*" onChange={handleImageUpload} className="mb-4" />
-            {image && (
-              <img
-                src={image}
-                alt={t('Uploaded')}
-                className="max-w-full h-auto rounded-md shadow-md"
-              />
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>{t('Poem')}</CardTitle>
-            <CardDescription>
+        
+          
+            
+              {t('Image')}
+            
+            
+              {t('Upload an image to generate a poem.')}
+            
+            
+              
+                
+              
+              {image && (
+                
+                  src={image}
+                  alt={t('Uploaded')}
+                  className="max-w-full h-auto rounded-md shadow-md"
+                />
+              )}
+            
+          
+          
+            
+              {t('Poem')}
+            
+            
               {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-4">
-              <div className="flex items-center justify-center mb-4">
-                <Label htmlFor="language" className="mr-2">{t('Language')}:</Label>
-                <Switch
-                  id="language"
-                  checked={isBangla}
-                  onCheckedChange={setIsBangla}
-                  aria-label="Select Language"
-                  className={cn("w-[5rem] h-[2.5rem] data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary relative rounded-full")}
-                >
-                 
-                </Switch>
-                 <div className={cn("absolute left-0 top-0 bottom-0 w-1/2 flex items-center justify-center transition-all duration-300 data-[state=checked]:right-0 data-[state=checked]:left-auto",
-                  isBangla ? "text-white" : "text-gray-500"
-                  )}>
-                   {isBangla ? "BN" : "EN"}
-                  </div>
-              </div>
-              <Label htmlFor="category">{t('Category')}</Label>
-              <Select onValueChange={setCategory} defaultValue={category}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('Select a category')} />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            
+            
+            
+              
+              
+                
+                  
+                   
+                     {isBangla ? "BN" : "EN"}
+                   
+                  
+                
+              
+
+              
+                {t('Category')}
+                
+                  
+                    
+                      {t('Select a category')}
+                    
+                  
+                  
+                    {categories.map((cat) => (
+                      
+                        {cat}
+                      
+                    ))}
+                  
+                
+              
+            
 
             {loading ? (
-              <div className="flex items-center justify-center">
-                <Icons.spinner className="animate-spin h-6 w-6 mr-2" />
+              
+                
+                  
+                
                 {t('Generating poem...')}
-              </div>
+              
             ) : (
-              <Textarea
+              
                 readOnly
                 value={poem || ''}
                 placeholder={t('Poem will appear here...')}
                 className="min-h-[200px] resize-none"
               />
             )}
-            <div className="flex justify-end mt-4">
-              <Button onClick={generatePoem} disabled={loading} className="mr-2">
-                {t('Generate Poem')}
-              </Button>
-              <Button variant="secondary" onClick={savePoem} disabled={loading || !poem}>
-                {t('Save Poem')}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+            
+              
+                
+                  {t('Generate Poem')}
+                
+                
+                  {t('Save Poem')}
+                
+              
+            
+          
+        
+      
+    
   );
 }
