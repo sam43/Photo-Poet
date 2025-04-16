@@ -199,6 +199,8 @@ export default function Home() {
                 value={poem || ''}
                 placeholder={t('Poem will appear here...')}
                 className="min-h-[200px] resize-none"
+                onChange={(e) => setPoem(e.target.value)}
+                readOnly
               />
             )}
 
