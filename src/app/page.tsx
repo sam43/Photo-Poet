@@ -108,102 +108,85 @@ export default function Home() {
   }, [poem, filename, toast]);
 
   return (
-    
-      
-        
-          
-            {t('PhotoPoet')}
-          
-        
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-2xl font-bold mb-4">{t('PhotoPoet')}</h1>
 
-        
-          
-            
-              {t('Image')}
-            
-            
+      <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
+        <Card className="w-full md:w-1/2">
+          <CardHeader>
+            <CardTitle>{t('Image')}</CardTitle>
+            <CardDescription>
               {t('Upload an image to generate a poem.')}
-            
-            
-              
-                
-              
-              {image && (
-                
-                  src={image}
-                  alt={t('Uploaded')}
-                  className="max-w-full h-auto rounded-md shadow-md"
-                />
-              )}
-            
-          
-          
-            
-              {t('Poem')}
-            
-            
-              {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
-            
-            
-            
-              
-              
-                
-                  
-                   
-                     {isBangla ? "BN" : "EN"}
-                   
-                  
-                
-              
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Input type="file" accept="image/*" onChange={handleImageUpload} />
+            {image && (
+              <img
+                src={image}
+                alt={t('Uploaded')}
+                className="max-w-full h-auto rounded-md shadow-md mt-4"
+              />
+            )}
+          </CardContent>
+        </Card>
 
-              
-                {t('Category')}
-                
-                  
-                    
-                      {t('Select a category')}
-                    
-                  
-                  
-                    {categories.map((cat) => (
-                      
-                        {cat}
-                      
-                    ))}
-                  
-                
-              
-            
+        <Card className="w-full md:w-1/2">
+          <CardHeader>
+            <CardTitle>{t('Poem')}</CardTitle>
+            <CardDescription>
+              {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+
+            <div className="flex items-center space-x-2 mb-4">
+              <Label htmlFor="isBangla" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                {isBangla ? "BN" : "EN"}
+              </Label>
+              <Switch id="isBangla" checked={isBangla} onCheckedChange={setIsBangla} />
+            </div>
+
+            <div className="mb-4">
+              <Label htmlFor="category">{t('Category')}</Label>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder={t('Select a category')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             {loading ? (
-              
-                
-                  
-                
+              <div className="flex items-center justify-center">
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 {t('Generating poem...')}
-              
+              </div>
             ) : (
-              
+              <Textarea
                 readOnly
                 value={poem || ''}
                 placeholder={t('Poem will appear here...')}
                 className="min-h-[200px] resize-none"
               />
             )}
-            
-              
-                
-                  {t('Generate Poem')}
-                
-                
-                  {t('Save Poem')}
-                
-              
-            
-          
-        
-      
-    
+            <div className="flex justify-between mt-4">
+              <Button onClick={generatePoem} disabled={loading}>
+                {t('Generate Poem')}
+              </Button>
+              <Button onClick={savePoem} disabled={!poem}>
+                {t('Save Poem')}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
