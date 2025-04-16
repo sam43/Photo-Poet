@@ -24,9 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* Removed data-new-gr-c-s-check-loaded and data-gr-ext-installed attributes */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
   );
 }
+
