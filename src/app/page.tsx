@@ -13,7 +13,6 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
 import {cn} from "@/lib/utils";
-//import {useTranslation} from 'react-i18next';
 
 const categories = [
   "Romantic",
@@ -27,7 +26,6 @@ const categories = [
 ];
 
 export default function Home() {
-  //const {t, i18n} = useTranslation();
   const [image, setImage] = useState<string | null>(null);
   const [poem, setPoem] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -107,10 +105,6 @@ export default function Home() {
     })
   }, [poem, filename, toast]);
 
-  //const changeLanguage = (lng: string) => {
-  //  i18n.changeLanguage(lng);
-  //};
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <h1 className="text-2xl font-bold mb-4">PhotoPoet</h1>
@@ -141,19 +135,21 @@ export default function Home() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-center mb-4">
-              <Switch
-                id="language"
-                checked={isBangla}
-                onCheckedChange={setIsBangla}
-                className="w-[5rem] h-[2.5rem] data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary"
-              >
-                <span className="absolute left-0 top-0 bottom-0 w-1/2 flex items-center justify-center data-[state=checked]:right-0 data-[state=checked]:left-auto">
-                  {isBangla ? "BN" : "EN"}
-                </span>
-              </Switch>
-            </div>
             <div className="mb-4">
+              <div className="flex items-center justify-center mb-4">
+                <Switch
+                  id="language"
+                  checked={isBangla}
+                  onCheckedChange={setIsBangla}
+                  className={cn("w-[5rem] h-[2.5rem] data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary relative rounded-full")}
+                >
+                  <span className={cn("absolute left-0 top-0 bottom-0 w-1/2 flex items-center justify-center transition-all duration-300 data-[state=checked]:right-0 data-[state=checked]:left-auto",
+                  isBangla ? "text-white" : "text-gray-500"
+                  )}>
+                    {isBangla ? "BN" : "EN"}
+                  </span>
+                </Switch>
+              </div>
               <Label htmlFor="category">Category</Label>
               <Select onValueChange={setCategory} defaultValue={category}>
                 <SelectTrigger className="w-full">
