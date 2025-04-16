@@ -13,6 +13,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
 import {cn} from "@/lib/utils";
+import {useTranslation} from 'react-i18next';
 
 const categories = [
   "Romantic",
@@ -26,6 +27,7 @@ const categories = [
 ];
 
 export default function Home() {
+  const {t, i18n} = useTranslation();
   const [image, setImage] = useState<string | null>(null);
   const [poem, setPoem] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -55,8 +57,8 @@ export default function Home() {
   const generatePoem = useCallback(async () => {
     if (!image) {
       toast({
-        title: "No image uploaded",
-        description: "Please upload an image to generate a poem.",
+        title: t("No image uploaded"),
+        description: t("Please upload an image to generate a poem."),
       })
       return;
     }
@@ -64,28 +66,28 @@ export default function Home() {
     setLoading(true);
     try {
       const result = await imageToPoem({photoUrl: image, category, language: isBangla ? "Bangla" : "English"});
-      setPoem(result?.poem || 'Failed to generate poem.');
+      setPoem(result?.poem || t('Failed to generate poem.'));
       toast({
-        title: "Poem Generated",
-        description: "Your poem has been successfully generated.",
+        title: t("Poem Generated"),
+        description: t("Your poem has been successfully generated."),
       })
     } catch (error: any) {
       console.error('Error generating poem:', error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to generate poem.",
+        title: t("Error"),
+        description: error.message || t("Failed to generate poem."),
       })
     } finally {
       setLoading(false);
     }
-  }, [image, toast, category, language, isBangla]);
+  }, [image, toast, category, language, isBangla, t]);
 
   const savePoem = useCallback(() => {
     if (!poem) {
       toast({
-        title: "No poem generated",
-        description: "Please generate a poem before saving.",
+        title: t("No poem generated"),
+        description: t("Please generate a poem before saving."),
       })
       return;
     }
@@ -100,17 +102,21 @@ export default function Home() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
     toast({
-      title: "Poem Saved",
-      description: "Your poem has been successfully saved.",
+      title: t("Poem Saved"),
+      description: t("Your poem has been successfully saved."),
     })
-  }, [poem, filename, toast]);
+  }, [poem, filename, toast, t]);
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-4">PhotoPoet</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("PhotoPoet")}</h1>
 
       <div className="flex items-center space-x-2 mb-4">
-        <Label htmlFor="language">Language:</Label>
+        <Label htmlFor="language">{t("Language")}:</Label>
         <Switch
           id="language"
           checked={isBangla}
@@ -122,15 +128,15 @@ export default function Home() {
       <div className="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Image</CardTitle>
-            <CardDescription>Upload an image to generate a poem.</CardDescription>
+            <CardTitle>{t("Image")}</CardTitle>
+            <CardDescription>{t("Upload an image to generate a poem.")}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center">
             <Input type="file" accept="image/*" onChange={handleImageUpload} className="mb-4" />
             {image && (
               <img
                 src={image}
-                alt="Uploaded"
+                alt={t("Uploaded")}
                 className="max-w-full h-auto rounded-md shadow-md"
               />
             )}
@@ -139,17 +145,17 @@ export default function Home() {
 
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Poem</CardTitle>
+            <CardTitle>{t("Poem")}</CardTitle>
             <CardDescription>
-              {poem ? 'Generated poem based on the image.' : 'No poem generated yet.'}
+              {poem ? t('Generated poem based on the image.') : t('No poem generated yet.')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-4">
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category">{t("Category")}</Label>
               <Select onValueChange={setCategory} defaultValue={category}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a category" />
+                  <SelectValue placeholder={t("Select a category")} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
@@ -164,22 +170,22 @@ export default function Home() {
             {loading ? (
               <div className="flex items-center justify-center">
                 <Icons.spinner className="animate-spin h-6 w-6 mr-2" />
-                Generating poem...
+                {t("Generating poem...")}
               </div>
             ) : (
               <Textarea
                 readOnly
                 value={poem || ''}
-                placeholder="Poem will appear here..."
+                placeholder={t("Poem will appear here...")}
                 className="min-h-[200px] resize-none"
               />
             )}
             <div className="flex justify-end mt-4">
               <Button onClick={generatePoem} disabled={loading} className="mr-2">
-                Generate Poem
+                {t("Generate Poem")}
               </Button>
               <Button variant="secondary" onClick={savePoem} disabled={loading || !poem}>
-                Save Poem
+                {t("Save Poem")}
               </Button>
             </div>
           </CardContent>
